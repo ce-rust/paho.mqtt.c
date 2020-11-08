@@ -317,10 +317,9 @@ int MQTTProtocol_handlePublishes(void* pack, int sock)
 		rc = SOCKET_ERROR; /* queue acks? */
 	else if (publish->header.bits.qos == 1)
 	{
-	  /* send puback before processing the publications because a lot of return publications could fill up the socket buffer */
+      Protocol_processPublication(publish, client, 1);
+	  /* send puback AFTER processing the publications */
 	  rc = MQTTPacket_send_puback(publish->MQTTVersion, publish->msgId, &client->net, client->clientID);
-	  /* if we get a socket error from sending the puback, should we ignore the publication? */
-	  Protocol_processPublication(publish, client, 1);
 	}
 	else if (publish->header.bits.qos == 2)
 	{
