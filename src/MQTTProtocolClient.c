@@ -319,7 +319,9 @@ int MQTTProtocol_handlePublishes(void* pack, int sock)
 	{
       Protocol_processPublication(publish, client, 1);
 	  /* send puback AFTER processing the publications */
+	  printf("\n\n***********PROCESSING DONE************************\n\n");
 	  rc = MQTTPacket_send_puback(publish->MQTTVersion, publish->msgId, &client->net, client->clientID);
+	  printf("\n\n***********ACK WAS SENT************************\n\n");
 	}
 	else if (publish->header.bits.qos == 2)
 	{
